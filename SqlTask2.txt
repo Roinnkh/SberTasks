@@ -1,0 +1,22 @@
+CREATE TABLE fin (
+  month INT,
+  emp_id INT,
+  salary INT,
+);
+
+INSERT INTO fin (month, emp_id, salary) VALUES (1, 1, 50);
+INSERT INTO fin (month, emp_id, salary) VALUES (2, 1, 50);
+INSERT INTO fin (month, emp_id, salary) VALUES (3, 1, 50);
+INSERT INTO fin (month, emp_id, salary) VALUES (1, 2, 60);
+INSERT INTO fin (month, emp_id, salary) VALUES (2, 2, 60);
+INSERT INTO fin (month, emp_id, salary) VALUES (3, 2, 60);
+
+SELECT
+  month,
+  emp_id,
+  salary,
+  SUM(salary) OVER (PARTITION BY emp_id ORDER BY month) AS sum_salary
+FROM
+  fin
+ORDER BY
+  emp_id, month;

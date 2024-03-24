@@ -1,0 +1,48 @@
+CREATE TABLE dep (
+    id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE emp (
+    id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    dep_id INT,
+    age INT,
+    salary INT,
+    FOREIGN KEY (dep_id) REFERENCES dep(id)
+);
+
+INSERT INTO dep (id, name) VALUES
+(1, 'Бухгалтерия'),
+(2, 'Кадры');
+
+INSERT INTO emp (id, name, dep_id, age, salary) VALUES
+(1, 'Иванов', 1, 45, 100),
+(2, 'Петров', 1, 34, 86),
+(3, 'Петров', 1, 18, 75),
+(4, 'Петров', 1, 56, 92),
+(5, 'Сидоров', 1, 28, 101),
+(6, 'Сидоров', 1, 37, 79),
+(7, 'Сидоров', 2, 31, 55),
+(8, 'Сидоров', 2, 30, 67),
+(9, 'Федотов', 2, 18, 43);
+
+CREATE OR REPLACE VIEW cnt As 
+SELECT 
+    dep.name,
+    emp.name AS ss,
+    COUNT(emp.name) AS number_of_families
+FROM 
+    dep
+JOIN
+    emp ON dep.id = emp.dep_id
+GROUP BY 
+    dep.name, emp.name;
+
+SELECT
+    cnt.name,
+    Sum(cnt.number_of_families)
+FROM cnt
+WHERE cnt.number_of_families > 1
+GROUP BY 
+    cnt.name
